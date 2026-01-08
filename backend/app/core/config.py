@@ -36,6 +36,9 @@ class Settings(BaseSettings):
             path=self.POSTGRES_DB,
         )
     #celery configuration
+
+
+    #fastapi security
     
 
 settings = Settings()

@@ -6,7 +6,7 @@ from sqlmodel import (
 from pydantic import HttpUrl
 from datetime import datetime
 from enum import Enum
-
+from core.security import GoodPwd
 # 用户表
 class UserBase(SQLModel):
     name : str
@@ -16,11 +16,16 @@ class User(UserBase,table = True):
     password_hash : str
     is_admin : bool
 
+
 class UserCreate(UserBase):
-    password : str
+    password : GoodPwd
 
 class UserPublic(UserBase):
     id: int
+
+class UerUpdate(UserBase):
+    new_password : GoodPwd
+    current_password : GoodPwd
 
 
 # 漏洞信息表

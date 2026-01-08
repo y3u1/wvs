@@ -1,8 +1,7 @@
-from fastapi import HTTPException,status
 from typing import Annotated
 from pydantic import AfterValidator,Field
 from fastapi.security import OAuth2PasswordBearer
-import pwdlib
+from pwdlib import PasswordHash
 import re
 
 def check_password_complicated(psd : str):
@@ -23,3 +22,18 @@ def check_password_complicated(psd : str):
         return
 
 GoodPwd = Annotated[str,Field(ge=8),AfterValidator(check_password_complicated)]
+
+# fastapi security
+
+# password hash
+pwd_hash = PasswordHash.recommended()
+
+def hash_password(plain_password : str) -> str:
+    return pwd_hash.hash(plain_password)
+
+def verify_password(hashed_password : str,plain_password : str) -> bool:
+    return pwd_hash.verify(plain_password, hashed_password)
+
+
+
+

@@ -14,7 +14,9 @@ class UserBase(SQLModel):
 class User(UserBase,table = True):
     id : int | None = Field(primary_key=True,default=None)
     password_hash : str
-    is_admin : bool
+    is_admin : bool = False
+    tasks : list["ScanTask"] | None = Relationship(back_populates="own_user")
+
 
 
 class UserCreate(UserBase):
@@ -62,6 +64,7 @@ class ScanTask(TaskBase,table=True):
     url : HttpUrl  
     celery_taskid : str = Field(foreign_key='celerytask.taskid')
     user_id : int = Field(foreign_key='user.id')
+    own_user : User = Relationship(back_populates="tasks")
 #celery 任务
 class CeleryTask(TaskBase,table=True):
     taskid : str = Field(primary_key=True)
